@@ -31,9 +31,6 @@ function init(app) {
   app.get('/sites',listAllSite)
 }
 
-// export default {
-//   init
-// }
 module.exports = {
   init
 }

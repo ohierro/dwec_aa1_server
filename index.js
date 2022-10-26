@@ -1,9 +1,5 @@
 const express = require('express')
-// import express from "express"
-// import users from "./users.js"
-// import categories from "./src/categories/category.controller.js"
 const db = require("./db/models/index.js")
-// const categories = require("./models/category")
 const categories = require("./src/categories/category.controller.js")
 
 
