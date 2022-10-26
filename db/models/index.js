@@ -40,7 +40,11 @@ db.Sequelize = Sequelize;
 // db.tutorials = require("./tutorial.model.js")(sequelize, Sequelize);
 // db.comments = require("./comment.model.js")(sequelize, Sequelize);
 
-db.Category.hasMany(db.Site, { as: "sites" });
+db.Category.hasMany(db.Site, {
+    as: "sites",
+    onDelete: "cascade",
+    hooks:true
+});
 db.Site.belongsTo(db.Category, {
   foreignKey: "categoryId",
   as: "category",

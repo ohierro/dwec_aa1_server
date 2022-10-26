@@ -1,19 +1,19 @@
-// import { Category } from "../db.js"
-// import { Category } from "../../models"
 const models = require("../../db/models")
-// const Category = require("../../models/category.js")
 
-async function listAll(req, res) {
+async function listCategories(req, res) {
   res.send(await models.Category.findAll())
 }
 
-async function listAllSite(req, res) {
+async function listSites(req, res) {
   res.send(await models.Site.findAll())
 }
 
-async function listSites(req, res) {
+async function listCategorySites(req, res) {
   let category = await models.Category.findByPk(req.params.id, { include: { model: models.Site, as: 'sites'  } })
-  res.send(category.sites)
+  if (category)
+    res.send(category.sites)
+  else
+    res.sendStatus(404)
 }
 
 async function addNewSite(req, res) {
@@ -23,12 +23,41 @@ async function addNewSite(req, res) {
   res.send(result)
 }
 
+async function addNewCategory(req, res) {
+  let result = await models.Category.build(req.body)
+  await result.save()
+  res.send(result)
+}
+
+async function delSite(req, res) {
+  let site = await models.Site.findByPk(req.params.id)
+  if (!site)
+    res.sendStatus(404)
+
+  await site.destroy()
+  res.sendStatus(200)
+}
+
+async function delCategory(req, res) {
+  let category = await models.Category.findByPk(req.params.id)
+
+  if (!category)
+    res.sendStatus(404)
+
+  await category.destroy()
+  res.sendStatus(200)
+}
 
 function init(app) {
-  app.get('/categories/:id', listSites)
+  app.get('/categories/:id', listCategorySites)
+  app.get('/categories',listCategories)
+  app.get('/sites',listSites)
+
   app.post('/categories/:id', addNewSite)
-  app.get('/categories',listAll)
-  app.get('/sites',listAllSite)
+  app.post('/categories', addNewCategory)
+
+  app.delete('/sites/:id',delSite)
+  app.delete('/categories/:id',delCategory)
 }
 
 module.exports = {
