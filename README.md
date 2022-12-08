@@ -84,3 +84,26 @@ El body tendrá la siguiente estructura:
 ```
 
 ⚠️  Al enviar datos, es necesario indicar la cabecera `Content-type:application/json`
+
+ENVIAR DATOS POR UN FORMS
+
+Ej crear categoría, código del archivo js:
+
+window.onload = function() {
+    console.log("onload")
+    document.getElementById("id").onclick = function() {
+        console.log('category: ${socument.forms.data.name.value}')
+    
+        fetch("http://localhost:3000/categories", {
+            method: 'POST',
+            headers: {
+                "Content-type":"application/json"
+            },
+            body: JSON.stringify({
+                name: document.forms.data.name.value
+            })
+        })
+        return false
+    }
+}
+
